@@ -1,0 +1,15 @@
+{
+    "name": "level.mhall119",
+    "description": "Level finder",
+    "architecture": "all",
+    "title": "Level",
+    "hooks": {
+        "level": {
+            "apparmor": "level.apparmor",
+            "desktop": "level.desktop"
+        }
+    },
+    "version": "0.1",
+    "maintainer": "Michael Hall <mhall119@ubuntu.com>",
+    "framework": "ubuntu-sdk-14.10-qml"
+}

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Level
+Exec=qmlscene $@ Main.qml
+Icon=Level.png
+Terminal=false
+Type=Application
+X-Ubuntu-Touch=true
+
