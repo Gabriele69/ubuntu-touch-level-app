@@ -83,6 +83,15 @@ MainView {
             return width / 2 * Math.sin(angle * Math.PI / 90)
         }
 
+        Rectangle {
+            width: units.gu(3)
+            height: width
+            radius: width/2
+            color: "red"
+            x: (horizLevel.width - width) / 2 + Math.cos(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
+            y: (horizLevel.height - height) / 2 - Math.sin(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
+        }
+
         Repeater {
             model: [40, 25, 15, 10, 5, 1]
             Rectangle {
@@ -92,16 +101,15 @@ MainView {
                 radius: width/2
                 border.color: "black"
                 border.width: units.dp(2)
-            }
-        }
+                color: "transparent"
 
-        Rectangle {
-            width: units.gu(3)
-            height: width
-            radius: width/2
-            color: "red"
-            x: (horizLevel.width - width) / 2 + Math.cos(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
-            y: (horizLevel.height - height) / 2 - Math.sin(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
+                Text {
+                    x: 0.85 * parent.width
+                    y: 0.85 * parent.height
+                    text: modelData + "&deg;"
+                    textFormat: Text.RichText
+                }
+            }
         }
     }
 }
