@@ -25,31 +25,17 @@ MainView {
         id: accel
         active: true
 
-        onReadingChanged: {
-            var x = accel.reading.x;
-            var y = accel.reading.y;
-            var rotate = 0
-            if (x > 0) {
-                if (y > 0) {
-                    rotate = 90 - (y*10);
-                } else {
-                    rotate = (-y*10) + 90;
-                }
-            } else {
-                if (y > 0) {
-                    rotate = -90 + (y*10);
-                } else {
-                    rotate = -90 + (-y*-10);
-                }
-            }
-            container.rotation = rotate
+        // Angle of acceleration vector in X-Y plane
+        property real theta
 
+        onReadingChanged: {
+            theta = Math.atan2(accel.reading.y, accel.reading.x) * 180 / Math.PI
         }
     }
 
     Rectangle {
         id: container
-        //rotation: getRotation()
+        rotation: 90 - accel.theta
         anchors.centerIn: parent
         height: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         width: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
@@ -73,7 +59,8 @@ MainView {
             anchors.bottom: level.top
             anchors.bottomMargin: units.gu(5)
             anchors.horizontalCenter: parent.horizontalCenter
-            text: Math.round(container.rotation) + "&deg;"
+            // The mod function is broken for negative numbers
+            text: Math.round(container.rotation + 360) % 360 + "&deg;"
             textFormat: Text.RichText
         }
     }
