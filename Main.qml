@@ -25,11 +25,17 @@ MainView {
         id: accel
         active: true
 
+        property real smoothing: 0.03
         // Angle of acceleration vector in X-Y plane
         property real theta
 
         onReadingChanged: {
-            theta = Math.atan2(accel.reading.y, accel.reading.x) * 180 / Math.PI
+            var newTheta = Math.atan2(accel.reading.y, accel.reading.x) * 180 / Math.PI
+            if (newTheta > 90 && theta < -90)
+                theta += 360
+            else if (theta > 90 && newTheta < -90)
+                theta -= 360
+            theta = smoothing * newTheta + (1 - smoothing) * theta
         }
     }
 
@@ -40,10 +46,6 @@ MainView {
         height: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         width: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         color: "white"
-
-        Behavior on rotation {
-            SmoothedAnimation { velocity: 100; }
-        }
 
         Rectangle {
             id: level
