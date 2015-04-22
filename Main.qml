@@ -28,19 +28,25 @@ MainView {
         property real smoothing: 0.03
         // Angle of acceleration vector in X-Y plane
         property real theta
+        // Angle of acceleration out of X-Y plane
+        property real phi
 
         onReadingChanged: {
-            var newTheta = Math.atan2(accel.reading.y, accel.reading.x) * 180 / Math.PI
+            var newTheta = Math.atan2(reading.y, reading.x) * 180 / Math.PI
             if (newTheta > 90 && theta < -90)
                 theta += 360
             else if (theta > 90 && newTheta < -90)
                 theta -= 360
             theta = smoothing * newTheta + (1 - smoothing) * theta
+
+            var newPhi = Math.atan2(reading.z, Math.sqrt(reading.x*reading.x + reading.y*reading.y)) * 180 / Math.PI
+            phi = smoothing * newPhi + (1 - smoothing) * phi
         }
     }
 
     Rectangle {
-        id: container
+        id: vertLevel
+        visible: accel.phi > -45 && accel.phi < 45
         rotation: 90 - accel.theta
         anchors.centerIn: parent
         height: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
@@ -62,10 +68,41 @@ MainView {
             anchors.bottomMargin: units.gu(5)
             anchors.horizontalCenter: parent.horizontalCenter
             // The mod function is broken for negative numbers
-            text: Math.round(container.rotation + 360) % 360 + "&deg;"
+            text: Math.round(vertLevel.rotation + 360) % 360 + "&deg;"
             textFormat: Text.RichText
         }
     }
 
+    Rectangle {
+        id: horizLevel
+        visible: !vertLevel.visible
+        anchors.fill: parent
+        color: "white"
+
+        function distForAngle(angle) {
+            return width / 2 * Math.sqrt(angle / 45)
+        }
+
+        Repeater {
+            model: [40, 30, 20, 10, 5, 1]
+            Rectangle {
+                anchors.centerIn: parent
+                width: 2 * horizLevel.distForAngle(modelData)
+                height: width
+                radius: width/2
+                border.color: "black"
+                border.width: units.dp(2)
+            }
+        }
+
+        Rectangle {
+            width: units.gu(3)
+            height: width
+            radius: width/2
+            color: "red"
+            x: (horizLevel.width - width) / 2 + Math.cos(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
+            y: (horizLevel.height - height) / 2 - Math.sin(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
+        }
+    }
 }
 
