@@ -80,11 +80,11 @@ MainView {
         color: "white"
 
         function distForAngle(angle) {
-            return width / 2 * Math.sqrt(angle / 45)
+            return width / 2 * Math.sin(angle * Math.PI / 90)
         }
 
         Repeater {
-            model: [40, 30, 20, 10, 5, 1]
+            model: [40, 25, 15, 10, 5, 1]
             Rectangle {
                 anchors.centerIn: parent
                 width: 2 * horizLevel.distForAngle(modelData)
