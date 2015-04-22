@@ -26,21 +26,21 @@ MainView {
         active: true
 
         property real smoothing: 0.03
+        property real ax
+        property real ay
+        property real az
         // Angle of acceleration vector in X-Y plane
         property real theta
         // Angle of acceleration out of X-Y plane
         property real phi
 
         onReadingChanged: {
-            var newTheta = Math.atan2(reading.y, reading.x) * 180 / Math.PI
-            if (newTheta > 90 && theta < -90)
-                theta += 360
-            else if (theta > 90 && newTheta < -90)
-                theta -= 360
-            theta = smoothing * newTheta + (1 - smoothing) * theta
+            ax = smoothing * reading.x + (1 - smoothing) * ax
+            ay = smoothing * reading.y + (1 - smoothing) * ay
+            az = smoothing * reading.z + (1 - smoothing) * az
 
-            var newPhi = Math.atan2(reading.z, Math.sqrt(reading.x*reading.x + reading.y*reading.y)) * 180 / Math.PI
-            phi = smoothing * newPhi + (1 - smoothing) * phi
+            theta = Math.atan2(ay, ax) * 180 / Math.PI
+            phi = Math.atan2(az, Math.sqrt(ax*ax + ay*ay)) * 180 / Math.PI
         }
     }
 
