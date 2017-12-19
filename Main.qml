@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import Ubuntu.Components 1.1
+import QtQuick 2.4
+import Ubuntu.Components 1.3
 import QtSensors 5.0
 
 MainView {
@@ -7,19 +7,12 @@ MainView {
     objectName: "mainView"
 
     // Note! applicationName needs to match the "name" field of the click manifest
-    applicationName: "level.mhall119"
-
-    /*
-     This property enables the application to change orientation
-     when the device is rotated. The default is false.
-    */
-    //automaticOrientation: true
-
-    // Removes the old toolbar and enables new features of the new header.
-    useDeprecatedToolbar: false
+    applicationName: "level.ubports"
 
     height: units.gu(100)
     width: units.gu(100)
+
+    backgroundColor: UbuntuColors.jet //"#133552"
 
     Accelerometer {
         id: accel
@@ -51,7 +44,7 @@ MainView {
         anchors.centerIn: parent
         height: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         width: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
-        color: "white"
+        color: UbuntuColors.jet //"#133552"
 
         Rectangle {
             id: level
@@ -59,7 +52,7 @@ MainView {
             width: parent.width
             anchors.horizontalCenter: parent.horizontalCenter
             y: parent.height / 2
-            color: "red"
+            color: "#d1c20e"
         }
 
         Label {
@@ -70,6 +63,9 @@ MainView {
             // The mod function is broken for negative numbers
             text: Math.round(vertLevel.rotation + 360) % 360 + "&deg;"
             textFormat: Text.RichText
+            font.pixelSize: units.dp(48)
+            font.weight: Font.DemiBold
+            color: "#d1c20e"
         }
     }
 
@@ -77,7 +73,7 @@ MainView {
         id: horizLevel
         visible: !vertLevel.visible
         anchors.fill: parent
-        color: "white"
+        color: UbuntuColors.jet //"#133552"
 
         function distForAngle(angle) {
             return width / 2 * Math.sin(angle * Math.PI / 90)
@@ -87,7 +83,7 @@ MainView {
             width: units.gu(3)
             height: width
             radius: width/2
-            color: "red"
+            color: "#d1c20e"
             x: (horizLevel.width - width) / 2 + Math.cos(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
             y: (horizLevel.height - height) / 2 - Math.sin(accel.theta * Math.PI / 180) * horizLevel.distForAngle(90 - Math.abs(accel.phi))
         }
@@ -99,15 +95,16 @@ MainView {
                 width: 2 * horizLevel.distForAngle(modelData)
                 height: width
                 radius: width/2
-                border.color: "black"
-                border.width: units.dp(2)
+                border.color: "#d1c20e"
+                border.width: units.dp(1)
                 color: "transparent"
 
-                Text {
+                Label {
                     x: 0.85 * parent.width
                     y: 0.85 * parent.height
                     text: modelData + "&deg;"
                     textFormat: Text.RichText
+                    color: "#d1c20e"
                 }
             }
         }

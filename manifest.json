@@ -1,5 +1,5 @@
 {
-    "name": "level.mhall119",
+    "name": "level.ubports",
     "description": "Level finder",
     "architecture": "all",
     "title": "Level",
@@ -10,6 +10,6 @@
         }
     },
     "version": "0.2",
-    "maintainer": "Michael Hall <mhall119@ubuntu.com>",
-    "framework": "ubuntu-sdk-14.10-qml"
+    "maintainer": "UBports Apps Team <stefano@ubports.com>",
+    "framework": "ubuntu-sdk-15.04"
 }
