@@ -9,7 +9,7 @@
             "desktop": "level.desktop"
         }
     },
-    "version": "0.2",
-    "maintainer": "UBports Apps Team <stefano@ubports.com>",
+    "version": "0.3",
+    "maintainer": "UBports Apps Team <apps@ubports.com>",
     "framework": "ubuntu-sdk-15.04"
 }

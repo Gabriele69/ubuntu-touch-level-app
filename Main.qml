@@ -37,14 +37,16 @@ MainView {
         }
     }
 
+    property bool radialBubble: false
+
     Rectangle {
         id: vertLevel
-        visible: accel.phi > -45 && accel.phi < 45
         rotation: 90 - accel.theta
         anchors.centerIn: parent
         height: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         width: Math.sqrt((parent.height*parent.height) + (parent.width*parent.width))
         color: UbuntuColors.jet //"#133552"
+        visible: !radialBubble
 
         Rectangle {
             id: level
@@ -71,9 +73,9 @@ MainView {
 
     Rectangle {
         id: horizLevel
-        visible: !vertLevel.visible
         anchors.fill: parent
         color: UbuntuColors.jet //"#133552"
+        visible: radialBubble
 
         function distForAngle(angle) {
             return width / 2 * Math.sin(angle * Math.PI / 90)
@@ -108,6 +110,19 @@ MainView {
                 }
             }
         }
+    }
+
+    AbstractButton {
+        anchors.fill: parent
+        onClicked: radialBubble = !radialBubble
+    }
+
+    Label {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors { bottom: parent.bottom; bottomMargin: units.dp(4) }
+        text: i18n.tr("Tap anywhere to switch mode")
+        textSize: Label.Large
+        color: radialBubble ? "#d1c20e" : UbuntuColors.jet
     }
 }
 
